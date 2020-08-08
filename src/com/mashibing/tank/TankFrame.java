@@ -8,8 +8,8 @@ import static java.lang.System.*;
 
 public class TankFrame extends Frame{
     Direction direction = Direction.DOWN;
-    int x = 200, y = 200;
-    Tank tank = new Tank(x, y, direction);
+    Tank tank = new Tank(200, 200, direction);
+    Bullet bullet = new Bullet(300, 300, Direction.DOWN);
 
     public TankFrame() {
         setSize(800, 600);
@@ -30,6 +30,7 @@ public class TankFrame extends Frame{
     @Override
     public void paint(Graphics g) {
         tank.paint(g);
+        bullet.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -41,18 +42,18 @@ public class TankFrame extends Frame{
 
         @Override
         public void keyTyped(KeyEvent e) {
-            int keyCode = e.getKeyCode();
+            int keyCode = e.getExtendedKeyCode();
             switch (keyCode) {
-                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
                     bL = true;
                     break;
-                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
                     bR = true;
                     break;
-                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
                     bU = true;
                     break;
-                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
                     bD = true;
                     break;
                 default:
@@ -63,18 +64,18 @@ public class TankFrame extends Frame{
 
         @Override
         public void keyReleased(KeyEvent e) {
-            int keyCode = e.getKeyCode();
+            int keyCode = e.getExtendedKeyCode();
             switch (keyCode) {
-                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
                     bL = false;
                     break;
-                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
                     bR = false;
                     break;
-                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
                     bU = false;
                     break;
-                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
                     bD = false;
                     break;
                 default:
