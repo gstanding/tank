@@ -26,6 +26,11 @@ public class Tank {
     // 持有对象的引用
     private TankFrame tankFrame = null;
 
+    public static final int WIDTH = ResouceManager.tankD.getWidth();
+    public static final int HEIGHT = ResouceManager.tankD.getHeight();
+    private boolean living = true;
+
+
     public boolean isMoving() {
         return moving;
     }
@@ -67,6 +72,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        if (!living) tankFrame.badTanks.remove(this);
         Color color = g.getColor();
         switch (direction) {
             case LEFT:
@@ -114,6 +120,12 @@ public class Tank {
     }
 
     public void fire() {
-        tankFrame.bullets.add(new Bullet(x, y, direction, tankFrame));
+        int bx = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
+        int by = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+        tankFrame.bullets.add(new Bullet(bx, by, direction, tankFrame));
+    }
+
+    public void boom() {
+        living = false;
     }
 }

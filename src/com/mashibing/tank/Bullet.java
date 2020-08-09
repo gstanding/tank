@@ -6,13 +6,13 @@ import static java.lang.System.out;
 
 
 public class Bullet {
-    private static final int WIDTH = 5;
-    private static final int HEIGHT = 5;
-    private static final int SPEED = 1;
+    public static final int WIDTH = ResouceManager.bulletD.getWidth();
+    public static final int HEIGHT = ResouceManager.bulletD.getHeight();
+    private static final int SPEED = 5;
     private int x;
     private int y;
     private Direction direction;
-    private boolean live = true;
+    private boolean living = true;
 
     private TankFrame tankFrame;
 
@@ -25,7 +25,7 @@ public class Bullet {
     }
 
     public void paint(Graphics g) {
-        if (!live) {
+        if (!living) {
             tankFrame.bullets.remove(this);
         }
         Color color = g.getColor();
@@ -78,6 +78,20 @@ public class Bullet {
     }
 
     private void delBulletOutOfFrame() {
-        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) live = false;
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) living = false;
+    }
+
+    public void colliedWith(Tank tank) {
+        Rectangle bulletRec = new Rectangle(x, y, WIDTH, HEIGHT);
+        Rectangle tankRec = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (bulletRec.intersects(tankRec)) {
+            tank.boom();
+            this.boom();
+        }
+
+    }
+
+    private void boom() {
+        living = false;
     }
 }
