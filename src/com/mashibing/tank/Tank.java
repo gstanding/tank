@@ -10,6 +10,7 @@ import static java.lang.System.out;
  * tank's action
  */
 public class Tank {
+    public Rectangle rectangle = new Rectangle();
     /**
      * position x,y of tank
      */
@@ -21,7 +22,7 @@ public class Tank {
     /**
      * speed of tank
      */
-    private static final int SPEED = 1;
+    private static final int SPEED = 10;
     private boolean moving = true;
 
     // 持有对象的引用
@@ -62,6 +63,11 @@ public class Tank {
             WIDTH = ResouceManager.goodTankU.getWidth();
             HEIGHT = ResouceManager.goodTankU.getHeight();
         }
+
+        rectangle.x = this.x;
+        rectangle.y  = this.y;
+        rectangle.width = WIDTH;
+        rectangle.height = HEIGHT;
     }
 
     public int getX() {
@@ -132,10 +138,20 @@ public class Tank {
                 break;
             default:
                 break;
-
         }
+        rectangle.x = x;
+        rectangle.y = y;
+        // 检测边界
+        detectBorder();
         if (group == Group.BAD && random.nextInt(10) > 8) this.fire();
         if (group == Group.BAD && random.nextInt(100) > 95) randomDirectiuon();
+    }
+
+    private void detectBorder() {
+        if (x < 0) x = 0;
+        else if (y < 30) y = 30;
+        else if (x > TankFrame.GAME_WIDTH - Tank.WIDTH) x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+        else if (y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
     }
 
     private void randomDirectiuon() {

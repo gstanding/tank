@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.sun.org.apache.regexp.internal.RECompiler;
+
 import java.awt.*;
 
 import static java.lang.System.out;
@@ -17,6 +19,9 @@ public class Bullet {
     private TankFrame tankFrame;
     private Group group = Group.BAD;
 
+
+    private Rectangle rectangle = new Rectangle();
+
     public Group getGroup() {
         return group;
     }
@@ -32,6 +37,11 @@ public class Bullet {
         this.direction = direction;
         this.group = group;
         this.tankFrame = tankFrame;
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = WIDTH;
+        rectangle.height = HEIGHT;
     }
 
     public void paint(Graphics g) {
@@ -84,7 +94,10 @@ public class Bullet {
             default:
                 break;
         }
+        rectangle.x = x;
+        rectangle.y = y;
         delBulletOutOfFrame();
+
     }
 
     private void delBulletOutOfFrame() {
@@ -93,9 +106,10 @@ public class Bullet {
 
     public void colliedWith(Tank tank) {
         if (group == tank.getGroup()) return;
-        Rectangle bulletRec = new Rectangle(x, y, WIDTH, HEIGHT);
-        Rectangle tankRec = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
-        if (bulletRec.intersects(tankRec)) {
+        // 每次生成浪费内存
+        // Rectangle bulletRec = new Rectangle(x, y, WIDTH, HEIGHT);
+        // Rectangle tankRec = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (rectangle.intersects(tank.rectangle)) {
             tank.boom();
             this.boom();
             tankFrame.explodes.add(new Explode(tank.getX(), tank.getY(), tankFrame));
