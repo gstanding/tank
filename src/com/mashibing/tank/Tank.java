@@ -1,5 +1,6 @@
 package com.mashibing.tank;
 
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.awt.*;
 
 import static java.lang.System.out;
@@ -67,9 +68,23 @@ public class Tank {
 
     public void paint(Graphics g) {
         Color color = g.getColor();
-        g.setColor(Color.yellow);
-        g.fillRect(x, y, 50, 50);
-        g.setColor(color);
+        switch (direction) {
+            case LEFT:
+                g.drawImage(ResouceManager.tankL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResouceManager.tankR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResouceManager.tankU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResouceManager.tankD, x, y, null);
+                break;
+            default:
+                break;
+
+        }
         move();
     }
 
