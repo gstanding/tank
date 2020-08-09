@@ -8,18 +8,26 @@ import static java.lang.System.out;
 public class Bullet {
     private static final int WIDTH = 5;
     private static final int HEIGHT = 5;
-    private static int SPEED = 10;
-    private int x, y;
+    private static final int SPEED = 1;
+    private int x;
+    private int y;
     private Direction direction;
+    private boolean live = true;
 
-    public Bullet(int x, int y, Direction direction) {
+    private TankFrame tankFrame;
+
+    public Bullet(int x, int y, Direction direction, TankFrame tankFrame) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.tankFrame = tankFrame;
     }
 
     public void paint(Graphics g) {
+        if (!live) {
+            tankFrame.bullets.remove(this);
+        }
         Color color = g.getColor();
         g.setColor(Color.red);
         g.fillOval(x, y, WIDTH, HEIGHT);
@@ -49,5 +57,10 @@ public class Bullet {
             default:
                 break;
         }
+        delBulletOutOfFrame();
+    }
+
+    private void delBulletOutOfFrame() {
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) live = false;
     }
 }

@@ -22,6 +22,9 @@ public class Tank {
     private static final int SPEED = 5;
     private boolean moving = false;
 
+    // 持有对象的引用
+    private TankFrame tankFrame = null;
+
     public boolean isMoving() {
         return moving;
     }
@@ -30,11 +33,12 @@ public class Tank {
         this.moving = moving;
     }
 
-    public Tank(int x, int y, Direction direction) {
+    public Tank(int x, int y, Direction direction, TankFrame tankFrame) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.tankFrame = tankFrame;
     }
 
     public int getX() {
@@ -92,5 +96,9 @@ public class Tank {
                 break;
 
         }
+    }
+
+    public void fire() {
+        tankFrame.bullets.add(new Bullet(x, y, direction, tankFrame));
     }
 }

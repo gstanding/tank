@@ -2,17 +2,21 @@
 package com.mashibing.tank;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.*;
 
 
 public class TankFrame extends Frame{
     Direction direction = Direction.DOWN;
-    Tank tank = new Tank(200, 200, direction);
-    Bullet bullet = new Bullet(300, 300, Direction.DOWN);
+    Tank tank = new Tank(200, 200, direction, this);
+    List<Bullet> bullets = new ArrayList<>();
+    Bullet bullet = new Bullet(300, 300, Direction.DOWN, this);
 
-    private static final int GAME_WIDTH = 800;
-    private static final int GAME_HEIGHT = 600;
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 600;
+
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -47,8 +51,15 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.white);
+        g.drawString("子弹的数量： " + bullets.size(), 60, 60);
+        g.setColor(color);
         tank.paint(g);
-        bullet.paint(g);
+//        bullets.forEach(bullet1 -> bullet1.paint(g));
+        for (int i=0; i < bullets.size(); i++) {
+            bullets.get(i).paint(g);
+        }
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -56,7 +67,6 @@ public class TankFrame extends Frame{
         boolean bR = false;
         boolean bU = false;
         boolean bD = false;
-        boolean emit = false;
 
 
         @Override
@@ -74,9 +84,6 @@ public class TankFrame extends Frame{
                     break;
                 case KeyEvent.VK_S:
                     bD = true;
-                    break;
-                case KeyEvent.VK_CONTROL:
-                    emit = true;
                     break;
                 default:
                     break;
@@ -100,6 +107,9 @@ public class TankFrame extends Frame{
                 case KeyEvent.VK_S:
                     bD = false;
                     break;
+                case KeyEvent.VK_CONTROL:
+                    tank.fire();
+                    break;
                 default:
                     break;
             }
@@ -115,8 +125,6 @@ public class TankFrame extends Frame{
                 if(bU) tank.setDirection(Direction.UP);
                 if(bD) tank.setDirection(Direction.DOWN);
             }
-
-
         }
     }
 
