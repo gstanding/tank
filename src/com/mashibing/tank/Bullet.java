@@ -98,7 +98,9 @@ public class Bullet {
         if (bulletRec.intersects(tankRec)) {
             tank.boom();
             this.boom();
+            tankFrame.explodes.add(new Explode(tank.getX(), tank.getY(), tankFrame));
         }
+
 
     }
 

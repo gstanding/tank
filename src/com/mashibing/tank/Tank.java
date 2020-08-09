@@ -27,8 +27,8 @@ public class Tank {
     // 持有对象的引用
     private TankFrame tankFrame = null;
 
-    public static final int WIDTH = ResouceManager.tankD.getWidth();
-    public static final int HEIGHT = ResouceManager.tankD.getHeight();
+    public static int WIDTH;
+    public static int HEIGHT;
     private boolean living = true;
 
     private Random random = new Random();
@@ -58,6 +58,10 @@ public class Tank {
         this.direction = direction;
         this.group = group;
         this.tankFrame = tankFrame;
+        if (this.group == Group.GOOD) {
+            WIDTH = ResouceManager.goodTankU.getWidth();
+            HEIGHT = ResouceManager.goodTankU.getHeight();
+        }
     }
 
     public int getX() {
@@ -89,16 +93,16 @@ public class Tank {
         Color color = g.getColor();
         switch (direction) {
             case LEFT:
-                g.drawImage(ResouceManager.tankL, x, y, null);
+                g.drawImage(group == Group.BAD ? ResouceManager.badTankL : ResouceManager.goodTankL, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResouceManager.tankR, x, y, null);
+                g.drawImage(group == Group.BAD ? ResouceManager.badTankR : ResouceManager.goodTankR, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResouceManager.tankU, x, y, null);
+                g.drawImage(group == Group.BAD ? ResouceManager.badTankU : ResouceManager.goodTankU, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResouceManager.tankD, x, y, null);
+                g.drawImage(group == Group.BAD ? ResouceManager.badTankD : ResouceManager.goodTankD, x, y, null);
                 break;
             default:
                 break;
@@ -131,6 +135,11 @@ public class Tank {
 
         }
         if (group == Group.BAD && random.nextInt(10) > 8) this.fire();
+        if (group == Group.BAD && random.nextInt(100) > 95) randomDirectiuon();
+    }
+
+    private void randomDirectiuon() {
+        direction = Direction.values()[random.nextInt(4)];
     }
 
     public void fire() {

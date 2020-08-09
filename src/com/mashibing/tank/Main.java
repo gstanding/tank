@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import static java.lang.Thread.sleep;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         System.setProperty("apple.awt.UIElement", "true");
@@ -8,9 +10,13 @@ public class Main {
         for(int i=0; i < 5; i++) {
             frame.badTanks.add(new Tank(50 + i * 80, 200, Direction.DOWN, Group.BAD, frame));
         }
-        while (true) {
-            Thread.sleep(50);
+
+        /**
+         * 游戏画面刷新
+         */
+        do {
+            sleep(50);
             frame.repaint();
-        }
+        } while (true);
     }
 }
