@@ -22,7 +22,7 @@ public class Tank {
     /**
      * speed of tank
      */
-    private static final int SPEED = 10;
+    private static final int SPEED = PropertyManager.getInt("tankSpeed");
     private boolean moving = true;
 
     // 持有对象的引用

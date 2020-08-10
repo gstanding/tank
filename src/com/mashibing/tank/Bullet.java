@@ -10,7 +10,7 @@ import static java.lang.System.out;
 public class Bullet {
     public static final int WIDTH = ResouceManager.bulletD.getWidth();
     public static final int HEIGHT = ResouceManager.bulletD.getHeight();
-    private static final int SPEED = 5;
+    private static final int SPEED = PropertyManager.getInt("bulletSpeed");
     private int x;
     private int y;
     private Direction direction;

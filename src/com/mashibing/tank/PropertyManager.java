@@ -20,4 +20,18 @@ public class PropertyManager {
         }
         return properties.get(key);
     }
+
+    public static Integer getInt(String key) {
+        if (properties == null) {
+            return 0;
+        }
+        return Integer.parseInt((String) properties.get(key));
+    }
+
+    public static String getString(String key) {
+        if (properties == null) {
+            return "";
+        }
+        return (String) properties.get(key);
+    }
 }
