@@ -6,6 +6,11 @@ import java.util.Properties;
 
 public class PropertyManager {
     static Properties properties = new Properties();
+
+    private PropertyManager() {
+    }
+
+
     static {
         try {
             properties.load(PropertyManager.class.getClassLoader().getResourceAsStream("config"));
