@@ -10,7 +10,7 @@ import static java.lang.System.out;
 /**
  * tank's action
  */
-public class Tank {
+public class Tank extends GameObject{
     public Rectangle rectangle = new Rectangle();
     /**
      * position x,y of tank
@@ -47,10 +47,6 @@ public class Tank {
 
     public void setGroup(Group group) {
         this.group = group;
-    }
-
-    public boolean isMoving() {
-        return moving;
     }
 
     public void setMoving(boolean moving) {
@@ -100,7 +96,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        if (!living) gameModel.badTanks.remove(this);
+        if (!living) gameModel.remove(this);
         Color color = g.getColor();
         switch (direction) {
             case LEFT:
@@ -184,5 +180,9 @@ public class Tank {
 
     public void boom() {
         living = false;
+    }
+
+    public void stop() {
+        moving = false;
     }
 }

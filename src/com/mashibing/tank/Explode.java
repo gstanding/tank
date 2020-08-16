@@ -1,11 +1,8 @@
 package com.mashibing.tank;
 
-import sun.audio.AudioPlayer;
-
-import java.applet.AudioClip;
 import java.awt.*;
 
-public class Explode {
+public class Explode extends GameObject {
     private static int WIDTH = ResouceManager.explodes[0].getWidth();
     private static int HEIGHT = ResouceManager.explodes[0].getHeight();
 
@@ -21,14 +18,14 @@ public class Explode {
         this.x = x;
         this.y = y;
         this.gameModel = gameModel;
-        gameModel.explodes.add(this);
+        gameModel.add(this);
     }
 
     public void paint(Graphics g) {
         g.drawImage(ResouceManager.explodes[step++], x + Tank.WIDTH/2 - WIDTH/2, y + Tank.HEIGHT/2 - HEIGHT/2, null);
         if (step >= ResouceManager.explodes.length) {
             step = 0;
-            gameModel.explodes.remove(this);
+            gameModel.remove(this);
         }
 
     }

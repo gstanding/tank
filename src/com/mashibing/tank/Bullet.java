@@ -1,13 +1,11 @@
 package com.mashibing.tank;
 
-import com.sun.org.apache.regexp.internal.RECompiler;
-
 import java.awt.*;
 
 import static java.lang.System.out;
 
 
-public class Bullet {
+public class Bullet extends GameObject {
     public static final int WIDTH = ResouceManager.bulletD.getWidth();
     public static final int HEIGHT = ResouceManager.bulletD.getHeight();
     private static final int SPEED = PropertyManager.getInt("bulletSpeed");
@@ -20,7 +18,7 @@ public class Bullet {
     private Group group = Group.BAD;
 
 
-    private Rectangle rectangle = new Rectangle();
+    public Rectangle rectangle = new Rectangle();
 
     public Group getGroup() {
         return group;
@@ -43,7 +41,7 @@ public class Bullet {
         rectangle.width = WIDTH;
         rectangle.height = HEIGHT;
 
-        gameModel.bullets.add(this);
+        gameModel.add(this);
     }
 
     public void paint(Graphics g) {
@@ -114,13 +112,13 @@ public class Bullet {
         if (rectangle.intersects(tank.rectangle)) {
             tank.boom();
             this.boom();
-            gameModel.explodes.add(new Explode(tank.getX(), tank.getY(), gameModel));
+            gameModel.add(new Explode(tank.getX(), tank.getY(), gameModel));
         }
 
 
     }
 
-    private void boom() {
+    public void boom() {
         living = false;
     }
 }

@@ -5,3 +5,4 @@ gameWidth=1080
 gameHeight=720
 goodFireStrategy=com.mashibing.tank.FourDirectionFireStrategy
 badFireStrategy=com.mashibing.tank.DefaultFireStrategy
+colliders=com.mashibing.tank.cor.BulletTankCollider,com.mashibing.tank.cor.TankTankCollider
