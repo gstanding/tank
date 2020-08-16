@@ -2,6 +2,8 @@
 package com.mashibing.tank;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +11,8 @@ import static java.lang.System.*;
 
 
 public class TankFrame extends Frame{
-    Direction direction = Direction.DOWN;
-    Tank tank = new Tank(200, 500, direction, Group.GOOD, this);
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> badTanks = new ArrayList<>();
-    List<Explode> explodes = new ArrayList<>();
+    GameModel gameModel = new GameModel();
+
 
     public static final int GAME_WIDTH = PropertyManager.getInt("gameWidth");
     public static final int GAME_HEIGHT = PropertyManager.getInt("gameHeight");
@@ -52,31 +51,8 @@ public class TankFrame extends Frame{
 
     @Override
     public void paint(Graphics g) {
-        Color color = g.getColor();
-        g.setColor(Color.white);
-        g.drawString("子弹的数量： " + bullets.size(), 60, 60);
-        g.drawString("敌方的数量： " + badTanks.size(), 60, 80);
-        g.drawString("爆炸的数量： " + explodes.size(), 60, 100);
-        g.setColor(color);
-        tank.paint(g);
-//        bullets.forEach(bullet1 -> bullet1.paint(g));
-        for (int i=0; i < bullets.size(); i++) {
-            bullets.get(i).paint(g);
-        }
+        gameModel.paint(g);
 
-        for (int i=0; i < badTanks.size(); i++) {
-            badTanks.get(i).paint(g);
-        }
-
-
-        for (int i=0; i < bullets.size(); i++)
-            for (int j=0; j< badTanks.size(); j++) {
-                bullets.get(i).colliedWith(badTanks.get(j));
-            }
-
-        for (int i=0; i < explodes.size(); i++) {
-            explodes.get(i).paint(g);
-        }
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -125,7 +101,20 @@ public class TankFrame extends Frame{
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    tank.fire();
+                    String goodFireStrategy = PropertyManager.getString("goodFireStrategy");
+                    try {
+                        Method method = Class.forName(goodFireStrategy).getDeclaredMethod("getInstance", null);
+                        FireStrategy<Tank> goodFireStrategyInstance = (FireStrategy<Tank>)method.invoke(Class.forName(goodFireStrategy));
+                        gameModel.getMainTank().fire(goodFireStrategyInstance);
+                    } catch (ClassNotFoundException classNotFoundException) {
+                        classNotFoundException.printStackTrace();
+                    } catch (IllegalAccessException illegalAccessException) {
+                        illegalAccessException.printStackTrace();
+                    } catch (NoSuchMethodException noSuchMethodException) {
+                        noSuchMethodException.printStackTrace();
+                    } catch (InvocationTargetException invocationTargetException) {
+                        invocationTargetException.printStackTrace();
+                    }
                     break;
                 default:
                     break;
@@ -134,13 +123,13 @@ public class TankFrame extends Frame{
         }
 
         private void setMainTankDir() {
-            if(!bR && !bL && !bU && !bD) tank.setMoving(false);
+            if(!bR && !bL && !bU && !bD) gameModel.getMainTank().setMoving(false);
             else {
-                tank.setMoving(true);
-                if(bL) tank.setDirection(Direction.LEFT);
-                if(bR) tank.setDirection(Direction.RIGHT);
-                if(bU) tank.setDirection(Direction.UP);
-                if(bD) tank.setDirection(Direction.DOWN);
+                gameModel.getMainTank().setMoving(true);
+                if(bL) gameModel.getMainTank().setDirection(Direction.LEFT);
+                if(bR) gameModel.getMainTank().setDirection(Direction.RIGHT);
+                if(bU) gameModel.getMainTank().setDirection(Direction.UP);
+                if(bD) gameModel.getMainTank().setDirection(Direction.DOWN);
             }
         }
     }

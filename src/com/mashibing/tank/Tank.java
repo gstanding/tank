@@ -1,7 +1,8 @@
 package com.mashibing.tank;
 
-import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 import static java.lang.System.out;
@@ -25,8 +26,12 @@ public class Tank {
     private static final int SPEED = PropertyManager.getInt("tankSpeed");
     private boolean moving = true;
 
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
     // 持有对象的引用
-    private TankFrame tankFrame = null;
+    private GameModel gameModel = null;
 
     public static int WIDTH;
     public static int HEIGHT;
@@ -52,13 +57,13 @@ public class Tank {
         this.moving = moving;
     }
 
-    public Tank(int x, int y, Direction direction, Group group, TankFrame tankFrame) {
+    public Tank(int x, int y, Direction direction, Group group, GameModel gameModel) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.group = group;
-        this.tankFrame = tankFrame;
+        this.gameModel = gameModel;
         if (this.group == Group.GOOD) {
             WIDTH = ResouceManager.goodTankU.getWidth();
             HEIGHT = ResouceManager.goodTankU.getHeight();
@@ -95,7 +100,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        if (!living) tankFrame.badTanks.remove(this);
+        if (!living) gameModel.badTanks.remove(this);
         Color color = g.getColor();
         switch (direction) {
             case LEFT:
@@ -143,8 +148,23 @@ public class Tank {
         rectangle.y = y;
         // 检测边界
         detectBorder();
-        if (group == Group.BAD && random.nextInt(10) > 8) this.fire();
-        if (group == Group.BAD && random.nextInt(100) > 95) randomDirectiuon();
+        String badFireStrategy = PropertyManager.getString("badFireStrategy");
+        try {
+            Method method = Class.forName(badFireStrategy).getDeclaredMethod("getInstance", null);
+            FireStrategy<Tank> badFireStrategytInstance = (FireStrategy<Tank>)method.invoke(Class.forName(badFireStrategy));
+
+            if (group == Group.BAD && random.nextInt(10) > 8) this.fire(badFireStrategytInstance);
+            if (group == Group.BAD && random.nextInt(100) > 95) randomDirectiuon();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void detectBorder() {
@@ -158,10 +178,8 @@ public class Tank {
         direction = Direction.values()[random.nextInt(4)];
     }
 
-    public void fire() {
-        int bx = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
-        int by = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tankFrame.bullets.add(new Bullet(bx, by, direction, group, tankFrame));
+    public void fire(FireStrategy<Tank> fireStrategy) {
+        fireStrategy.fire(this);
     }
 
     public void boom() {

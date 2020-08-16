@@ -3,3 +3,5 @@ tankSpeed=5
 bulletSpeed=10
 gameWidth=1080
 gameHeight=720
+goodFireStrategy=com.mashibing.tank.FourDirectionFireStrategy
+badFireStrategy=com.mashibing.tank.DefaultFireStrategy

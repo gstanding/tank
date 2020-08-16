@@ -16,7 +16,7 @@ public class Bullet {
     private Direction direction;
     private boolean living = true;
 
-    private TankFrame tankFrame;
+    private GameModel gameModel;
     private Group group = Group.BAD;
 
 
@@ -30,23 +30,25 @@ public class Bullet {
         this.group = group;
     }
 
-    public Bullet(int x, int y, Direction direction, Group group, TankFrame tankFrame) {
+    public Bullet(int x, int y, Direction direction, Group group, GameModel gameModel) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.group = group;
-        this.tankFrame = tankFrame;
+        this.gameModel = gameModel;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
         rectangle.width = WIDTH;
         rectangle.height = HEIGHT;
+
+        gameModel.bullets.add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            tankFrame.bullets.remove(this);
+            gameModel.bullets.remove(this);
         }
         Color color = g.getColor();
 //        g.setColor(Color.red);
@@ -112,7 +114,7 @@ public class Bullet {
         if (rectangle.intersects(tank.rectangle)) {
             tank.boom();
             this.boom();
-            tankFrame.explodes.add(new Explode(tank.getX(), tank.getY(), tankFrame));
+            gameModel.explodes.add(new Explode(tank.getX(), tank.getY(), gameModel));
         }
 
 
