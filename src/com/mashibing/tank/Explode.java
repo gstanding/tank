@@ -10,22 +10,20 @@ public class Explode extends GameObject {
     private int y;
 
     private boolean living = true;
-    private GameModel gameModel = null;
 
     private int step = 0;
 
-    public Explode(int x, int y, GameModel gameModel) {
+    public Explode(int x, int y) {
         this.x = x;
         this.y = y;
-        this.gameModel = gameModel;
-        gameModel.add(this);
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g) {
         g.drawImage(ResouceManager.explodes[step++], x + Tank.WIDTH/2 - WIDTH/2, y + Tank.HEIGHT/2 - HEIGHT/2, null);
         if (step >= ResouceManager.explodes.length) {
             step = 0;
-            gameModel.remove(this);
+            GameModel.getInstance().remove(this);
         }
 
     }

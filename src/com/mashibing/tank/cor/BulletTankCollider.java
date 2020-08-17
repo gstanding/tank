@@ -1,9 +1,6 @@
 package com.mashibing.tank.cor;
 
-import com.mashibing.tank.Bullet;
-import com.mashibing.tank.Explode;
-import com.mashibing.tank.GameObject;
-import com.mashibing.tank.Tank;
+import com.mashibing.tank.*;
 
 public class BulletTankCollider implements Collider {
     @Override
@@ -18,8 +15,8 @@ public class BulletTankCollider implements Collider {
             if (bullet.rectangle.intersects(tank.rectangle)) {
                 tank.boom();
                 bullet.boom();
+                GameModel.getInstance().add(new Explode(tank.getX(), tank.getY()));
                 return false;
-//                gameModel.add(new Explode(tank.getX(), tank.getY(), gameModel));
             }
 
         }

@@ -9,12 +9,23 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * GameModel做成单例模式
+ */
 public class GameModel {
-    Tank tank = new Tank(200, 500, Direction.DOWN, Group.GOOD, this);
+    private static final GameModel INSTANCE = new GameModel();
+    static {
+        INSTANCE.init();
+    }
 
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> badTanks = new ArrayList<>();
-    List<Explode> explodes = new ArrayList<>();
+    public static GameModel  getInstance() {
+        return INSTANCE;
+    }
+    Tank tank = new Tank(200, 500, Direction.DOWN, Group.GOOD);
+
+//    List<Bullet> bullets = new ArrayList<>();
+//    List<Tank> badTanks = new ArrayList<>();
+//    List<Explode> explodes = new ArrayList<>();
 
     List<GameObject> gameObjects = new ArrayList<>();
 
@@ -23,12 +34,21 @@ public class GameModel {
 
     ColliderChain colliderChain = new ColliderChain();
 
-    public GameModel() {
+    private GameModel() {
+
+    }
+
+    private void init() {
         int initTankCount = PropertyManager.getInt("initTantCount");
         // 初始化敌方坦克
         for(int i=0; i < initTankCount; i++) {
-            gameObjects.add(new Tank(50 + i * 80, 200, Direction.DOWN, Group.BAD, this));
+            gameObjects.add(new Tank(50 + i * 80, 200, Direction.DOWN, Group.BAD));
         }
+
+        add(new Wall(150, 150, 200, 50));
+        add(new Wall(550, 150, 200, 50));
+        add(new Wall(300, 300, 50, 200));
+        add(new Wall(400, 300, 50, 300));
     }
 
     public void add(GameObject gameObject) {
@@ -60,7 +80,9 @@ public class GameModel {
                 colliderChain.collide(gameObject1, gameObject2);
 
             }
+            colliderChain.collide(tank,gameObjects.get(i));
         }
+
 
 //        for (int i=0; i < badTanks.size(); i++) {
 //            badTanks.get(i).paint(g);

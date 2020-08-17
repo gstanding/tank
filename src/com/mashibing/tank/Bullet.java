@@ -14,7 +14,6 @@ public class Bullet extends GameObject {
     private Direction direction;
     private boolean living = true;
 
-    private GameModel gameModel;
     private Group group = Group.BAD;
 
 
@@ -28,30 +27,25 @@ public class Bullet extends GameObject {
         this.group = group;
     }
 
-    public Bullet(int x, int y, Direction direction, Group group, GameModel gameModel) {
+    public Bullet(int x, int y, Direction direction, Group group) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.group = group;
-        this.gameModel = gameModel;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
         rectangle.width = WIDTH;
         rectangle.height = HEIGHT;
 
-        gameModel.add(this);
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            gameModel.bullets.remove(this);
+            GameModel.getInstance().remove(this);
         }
-        Color color = g.getColor();
-//        g.setColor(Color.red);
-//        g.fillOval(x, y, WIDTH, HEIGHT);
-//        g.setColor(color);
         switch (direction) {
             case LEFT:
                 g.drawImage(ResouceManager.bulletL, x, y, null);
@@ -104,19 +98,6 @@ public class Bullet extends GameObject {
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) living = false;
     }
 
-    public void colliedWith(Tank tank) {
-        if (group == tank.getGroup()) return;
-        // 每次生成浪费内存
-        // Rectangle bulletRec = new Rectangle(x, y, WIDTH, HEIGHT);
-        // Rectangle tankRec = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
-        if (rectangle.intersects(tank.rectangle)) {
-            tank.boom();
-            this.boom();
-            gameModel.add(new Explode(tank.getX(), tank.getY(), gameModel));
-        }
-
-
-    }
 
     public void boom() {
         living = false;

@@ -1,17 +1,19 @@
 
 package com.mashibing.tank;
+
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
-import static java.lang.System.*;
+import static java.lang.System.exit;
 
 
 public class TankFrame extends Frame{
-    GameModel gameModel = new GameModel();
+    GameModel gameModel = GameModel.getInstance();
 
 
     public static final int GAME_WIDTH = PropertyManager.getInt("gameWidth");

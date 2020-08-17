@@ -16,6 +16,8 @@ public class Tank extends GameObject{
      * position x,y of tank
      */
     private int x, y;
+
+    private int preX, preY;
     /**
      * direction of tank
      */
@@ -25,13 +27,6 @@ public class Tank extends GameObject{
      */
     private static final int SPEED = PropertyManager.getInt("tankSpeed");
     private boolean moving = true;
-
-    public GameModel getGameModel() {
-        return gameModel;
-    }
-
-    // 持有对象的引用
-    private GameModel gameModel = null;
 
     public static int WIDTH;
     public static int HEIGHT;
@@ -53,13 +48,12 @@ public class Tank extends GameObject{
         this.moving = moving;
     }
 
-    public Tank(int x, int y, Direction direction, Group group, GameModel gameModel) {
+    public Tank(int x, int y, Direction direction, Group group) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.group = group;
-        this.gameModel = gameModel;
         if (this.group == Group.GOOD) {
             WIDTH = ResouceManager.goodTankU.getWidth();
             HEIGHT = ResouceManager.goodTankU.getHeight();
@@ -96,7 +90,7 @@ public class Tank extends GameObject{
     }
 
     public void paint(Graphics g) {
-        if (!living) gameModel.remove(this);
+        if (!living) GameModel.getInstance().remove(this);
         Color color = g.getColor();
         switch (direction) {
             case LEFT:
@@ -119,6 +113,8 @@ public class Tank extends GameObject{
     }
 
     private void move() {
+        preX = x;
+        preY = y;
         if (!moving) return;
         switch (direction) {
             case LEFT:
@@ -183,6 +179,7 @@ public class Tank extends GameObject{
     }
 
     public void stop() {
-        moving = false;
+        x = preX;
+        y = preY;
     }
 }
