@@ -6,10 +6,20 @@ public class Explode extends GameObject {
     private static int WIDTH = ResouceManager.explodes[0].getWidth();
     private static int HEIGHT = ResouceManager.explodes[0].getHeight();
 
-    private int x;
-    private int y;
+//    private int x;
+//    private int y;
 
     private boolean living = true;
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
+    }
 
     private int step = 0;
 

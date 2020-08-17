@@ -9,10 +9,20 @@ public class Bullet extends GameObject {
     public static final int WIDTH = ResouceManager.bulletD.getWidth();
     public static final int HEIGHT = ResouceManager.bulletD.getHeight();
     private static final int SPEED = PropertyManager.getInt("bulletSpeed");
-    private int x;
-    private int y;
+//    private int x;
+//    private int y;
     private Direction direction;
     private boolean living = true;
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
+    }
 
     private Group group = Group.BAD;
 

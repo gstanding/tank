@@ -15,6 +15,15 @@ public class Wall extends GameObject{
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
 
     @Override
     public void paint(Graphics graphics) {
