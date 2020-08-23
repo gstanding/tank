@@ -80,6 +80,11 @@ public class TankFrame extends Frame{
                 case KeyEvent.VK_S:
                     bD = true;
                     break;
+                case KeyEvent.VK_F:
+                    gameModel.save();
+                    break;
+                case KeyEvent.VK_L:
+                    gameModel.load();
                 default:
                     break;
             }
